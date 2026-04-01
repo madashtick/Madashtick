@@ -10,55 +10,67 @@ interface KpiCardsProps {
 
 export function KpiCards({ kpi }: KpiCardsProps) {
   const { t } = useTranslation();
-  const budgetPct = Math.min(Math.round((kpi.budgetConsomme / kpi.budgetObjectif) * 100), 100);
-  const ticketsPct = Math.min(Math.round((kpi.ticketsTraites / kpi.ticketsObjectif) * 100), 100);
+  const budgetRatio = (kpi.budgetConsomme / kpi.budgetObjectif) * 100;
+  const ticketsRatio = (kpi.ticketsTraites / kpi.ticketsObjectif) * 100;
+  const budgetPct = Math.min(Math.round(budgetRatio), 100);
+  const ticketsPct = Math.min(Math.round(ticketsRatio), 100);
+  const budgetDisplayPct = Math.round(budgetRatio);
+  const ticketsDisplayPct = Math.round(ticketsRatio);
+  const budgetOver = budgetRatio > 100;
+  const ticketsOver = ticketsRatio > 100;
 
   return (
     <div className="space-y-4">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Budget J/H */}
         <Card className="border-[1.5px] border-[#e2e8f0] shadow-sm rounded-none">
-          <CardHeader className="pb-2">
+          <CardHeader className="pb-1">
             <CardTitle className="text-[#004d40] text-sm font-bold uppercase tracking-wider">{t('dashboard.kpi.budget_title')}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-4xl font-bold text-[#004d40]">{kpi.budgetConsomme}</span>
-              <span className="text-xl font-bold text-[#004d40]">{t('common.jh')}</span>
+          <CardContent className="pt-1">
+            <div className="flex items-end justify-between mb-3">
+              <div className="flex items-baseline gap-2">
+                <span className="text-5xl font-bold text-[#004d40]">{kpi.budgetConsomme}</span>
+                <span className="text-2xl font-bold text-[#004d40]">{t('common.jh')}</span>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">Cible annuelle</p>
+                <p className="text-xl font-bold text-[#004d40]">{kpi.budgetObjectif} <span className="text-sm">{t('common.jh')}</span></p>
+              </div>
             </div>
-            <p className="text-[11px] text-muted-foreground mb-4 font-medium italic">
-              {t('dashboard.kpi.target_budget', { target: kpi.budgetObjectif })}
-            </p>
-            <div className="relative h-4 w-full bg-[#f1f5f9] rounded-full overflow-hidden mb-2">
+            <div className="relative h-5 w-full bg-[#f1f5f9] rounded-full overflow-hidden mb-4">
               <div
-                className="absolute h-full bg-[#4ade80] rounded-full"
+                className={`absolute h-full rounded-full ${budgetOver ? 'bg-red-500' : 'bg-[#4ade80]'}`}
                 style={{ width: `${budgetPct}%` }}
               />
             </div>
-            <p className="text-[12px] text-center font-bold text-slate-700">{t('dashboard.kpi.budget_pct', { pct: budgetPct })}</p>
+            <p className="text-xl text-center font-bold text-slate-700 mt-4">{t('dashboard.kpi.budget_pct', { pct: budgetDisplayPct })}</p>
           </CardContent>
         </Card>
 
         {/* Tickets traités */}
         <Card className="border-[1.5px] border-[#e2e8f0] shadow-sm rounded-none">
-          <CardHeader className="pb-2">
+          <CardHeader className="pb-1">
             <CardTitle className="text-[#004d40] text-sm font-bold uppercase tracking-wider">{t('dashboard.kpi.tickets_title')}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline gap-2 mb-1">
-              <span className="text-4xl font-bold text-[#004d40]">{kpi.ticketsTraites}</span>
-              <span className="text-xl font-bold text-[#004d40]">{t('dashboard.kpi.tickets_unit')}</span>
+          <CardContent className="pt-1">
+            <div className="flex items-end justify-between mb-3">
+              <div className="flex items-baseline gap-2">
+                <span className="text-5xl font-bold text-[#004d40]">{kpi.ticketsTraites}</span>
+                <span className="text-2xl font-bold text-[#004d40]">{t('dashboard.kpi.tickets_unit')}</span>
+              </div>
+              <div className="text-right">
+                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">Cible annuelle</p>
+                <p className="text-xl font-bold text-[#004d40]">{kpi.ticketsObjectif} <span className="text-sm">{t('dashboard.kpi.tickets_unit')}</span></p>
+              </div>
             </div>
-            <p className="text-[11px] text-muted-foreground mb-4 font-medium italic">
-              {t('dashboard.kpi.target_tickets', { target: kpi.ticketsObjectif })}
-            </p>
-            <div className="relative h-4 w-full bg-[#f1f5f9] rounded-full overflow-hidden mb-2">
+            <div className="relative h-5 w-full bg-[#f1f5f9] rounded-full overflow-hidden mb-4">
               <div
-                className="absolute h-full bg-[#4ade80] rounded-full"
+                className={`absolute h-full rounded-full ${ticketsOver ? 'bg-red-500' : 'bg-[#4ade80]'}`}
                 style={{ width: `${ticketsPct}%` }}
               />
             </div>
-            <p className="text-[12px] text-center font-bold text-slate-700">{t('dashboard.kpi.tickets_pct', { pct: ticketsPct })}</p>
+            <p className="text-xl text-center font-bold text-slate-700 mt-4">{t('dashboard.kpi.tickets_pct', { pct: ticketsDisplayPct })}</p>
           </CardContent>
         </Card>
 
@@ -81,15 +93,30 @@ export function KpiCards({ kpi }: KpiCardsProps) {
           <CardHeader className="pb-2">
             <CardTitle className="text-[#004d40] text-sm font-bold uppercase tracking-wider">{t('dashboard.kpi.repartition_title')}</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-1">
-            <div className="text-sm font-bold text-[#5fa8d3]">
-              {kpi.repartition.evolutif.total.toFixed(1)} {t('common.jh')} ({kpi.repartition.evolutif.pct}%)
+          <CardContent className="space-y-3 pt-1">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#5fa8d3]">{t('tickets.type_values.evolutif')}</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-[#5fa8d3]">{kpi.repartition.evolutif.total.toFixed(1)}</span>
+                <span className="text-sm font-bold text-[#5fa8d3]">{t('common.jh')}</span>
+                <span className="text-sm font-semibold text-[#5fa8d3] ml-auto">({kpi.repartition.evolutif.pct}%)</span>
+              </div>
             </div>
-            <div className="text-sm font-bold text-[#f59e0b]">
-              {kpi.repartition.correctif.total.toFixed(1)} {t('common.jh')} ({kpi.repartition.correctif.pct}%)
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#f59e0b]">{t('tickets.type_values.correctif')}</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-[#f59e0b]">{kpi.repartition.correctif.total.toFixed(1)}</span>
+                <span className="text-sm font-bold text-[#f59e0b]">{t('common.jh')}</span>
+                <span className="text-sm font-semibold text-[#f59e0b] ml-auto">({kpi.repartition.correctif.pct}%)</span>
+              </div>
             </div>
-            <div className="text-sm font-bold text-[#e11d48]">
-              {kpi.repartition.preventif.total.toFixed(1)} {t('common.jh')} ({kpi.repartition.preventif.pct}%)
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#e11d48]">{t('tickets.type_values.preventif')}</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-[#e11d48]">{kpi.repartition.preventif.total.toFixed(1)}</span>
+                <span className="text-sm font-bold text-[#e11d48]">{t('common.jh')}</span>
+                <span className="text-sm font-semibold text-[#e11d48] ml-auto">({kpi.repartition.preventif.pct}%)</span>
+              </div>
             </div>
           </CardContent>
         </Card>

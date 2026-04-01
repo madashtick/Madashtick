@@ -102,6 +102,15 @@ export function filterTickets(tickets: Ticket[], filters: TicketFilters): Ticket
     if (filters.enCoursDev === 'YES' && t.statut !== 'EN_COURS') return false;
     if (filters.enCoursDev === 'NO' && t.statut === 'EN_COURS') return false;
 
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      if (
+        !t.numero_ticket.toLowerCase().includes(q) &&
+        !t.libelle.toLowerCase().includes(q) &&
+        !(t.commentaire?.toLowerCase().includes(q))
+      ) return false;
+    }
+
     return true;
   });
 }

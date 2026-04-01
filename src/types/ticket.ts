@@ -53,4 +53,5 @@ export interface TicketFilters {
   livraisonTest: 'ALL' | 'YES' | 'NO';
   miseEnProd: 'ALL' | 'YES' | 'NO';
   enCoursDev: 'ALL' | 'YES' | 'NO';
+  search: string;
 }

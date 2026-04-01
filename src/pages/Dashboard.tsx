@@ -120,7 +120,8 @@ const Dashboard = () => {
     mois: 'ALL',
     livraisonTest: 'ALL',
     miseEnProd: 'ALL',
-    enCoursDev: 'ALL'
+    enCoursDev: 'ALL',
+    search: ''
   });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [ticketToEdit, setTicketToEdit] = useState<Ticket | null>(null);

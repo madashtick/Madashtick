@@ -1,6 +1,17 @@
+import { useState } from 'react';
 import { Ticket, TicketStatut } from '@/types/ticket';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Edit, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +24,7 @@ interface TicketTableProps {
 
 export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
   const { t } = useTranslation();
+  const [ticketToDelete, setTicketToDelete] = useState<string | null>(null);
 
   const statusStyles: Record<TicketStatut, string> = {
     'NOUVEAU': 'bg-blue-50 text-blue-700 border-blue-200',
@@ -34,7 +46,30 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
     return t(`tickets.gravity_values.${gravity.toLowerCase()}`);
   };
   return (
-    <div className="border-[1.5px] border-[#e2e8f0] bg-white text-xs shadow-sm">
+    <>
+      <AlertDialog open={!!ticketToDelete} onOpenChange={(open) => !open && setTicketToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. Le ticket sera définitivement supprimé.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                if (ticketToDelete) onDelete(ticketToDelete);
+                setTicketToDelete(null);
+              }}
+            >
+              Supprimer
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <div className="border-[1.5px] border-[#e2e8f0] bg-white text-xs shadow-sm">
       <div className="w-full">
         <Table>
           <TableHeader className="sticky top-[138px] z-20 bg-[#f0f9f6] shadow-md ring-1 ring-[#cfeadd]">
@@ -101,7 +136,7 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
                       variant="ghost"
                       size="icon"
                       className="h-7 w-7 text-slate-400 hover:text-destructive"
-                      onClick={() => onDelete(t.id)}
+                      onClick={() => setTicketToDelete(t.id)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
@@ -120,5 +155,6 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
         </Table>
       </div>
     </div>
+    </>
   );
 }

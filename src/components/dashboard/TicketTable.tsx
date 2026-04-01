@@ -12,6 +12,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Edit, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +34,13 @@ interface TicketTableProps {
 
 export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
   const { t } = useTranslation();
+  const isMobile = useIsMobile();
   const [ticketToDelete, setTicketToDelete] = useState<string | null>(null);
+
+  const handleConfirmDelete = () => {
+    if (ticketToDelete) onDelete(ticketToDelete);
+    setTicketToDelete(null);
+  };
 
   const statusStyles: Record<TicketStatut, string> = {
     'NOUVEAU': 'bg-blue-50 text-blue-700 border-blue-200',
@@ -47,28 +63,44 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
   };
   return (
     <>
-      <AlertDialog open={!!ticketToDelete} onOpenChange={(open) => !open && setTicketToDelete(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
-            <AlertDialogDescription>
-              Cette action est irréversible. Le ticket sera définitivement supprimé.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => {
-                if (ticketToDelete) onDelete(ticketToDelete);
-                setTicketToDelete(null);
-              }}
-            >
-              Supprimer
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {isMobile ? (
+        <Drawer open={!!ticketToDelete} onOpenChange={(open) => !open && setTicketToDelete(null)}>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Confirmer la suppression</DrawerTitle>
+              <DrawerDescription>
+                Cette action est irréversible. Le ticket sera définitivement supprimé.
+              </DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter>
+              <Button variant="destructive" onClick={handleConfirmDelete}>Supprimer</Button>
+              <DrawerClose asChild>
+                <Button variant="outline">Annuler</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <AlertDialog open={!!ticketToDelete} onOpenChange={(open) => !open && setTicketToDelete(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
+              <AlertDialogDescription>
+                Cette action est irréversible. Le ticket sera définitivement supprimé.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                onClick={handleConfirmDelete}
+              >
+                Supprimer
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
       <div className="border-[1.5px] border-[#e2e8f0] bg-white text-xs shadow-sm">
       <div className="w-full">
         <Table>

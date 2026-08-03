@@ -117,7 +117,7 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
             </div>
             <div className="space-y-2">
               <Label htmlFor="charge">{t('tickets.charge')} *</Label>
-              <Input id="charge" type="number" min="0" step="0.5" value={form.charge_jh} onChange={e => setForm({ ...form, charge_jh: e.target.value })} />
+              <Input id="charge" type="number" min="0" step="any" value={form.charge_jh} onChange={e => setForm({ ...form, charge_jh: e.target.value })} />
             </div>
           </div>
           <div className="space-y-2">

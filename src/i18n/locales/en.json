@@ -117,6 +117,7 @@
         "comment": "Comment",
         "actions": "Actions",
         "no_data": "No data available in table",
+        "clear_search": "Clear search",
         "all_types": "All types",
         "all_gravities": "All gravities",
         "filter_all": "All ({{label}})",

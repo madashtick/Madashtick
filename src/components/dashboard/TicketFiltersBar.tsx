@@ -1,7 +1,7 @@
 import { TicketFilters, TicketType, TicketGravite } from '@/types/ticket';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { MONTH_NAMES } from '@/lib/kpi-utils';
 import { useTranslation } from 'react-i18next';
 
@@ -21,8 +21,19 @@ export function TicketFiltersBar({ filters, onFiltersChange }: TicketFiltersBarP
           placeholder="Rechercher..."
           value={filters.search}
           onChange={e => onFiltersChange({ ...filters, search: e.target.value })}
-          className="pl-8 w-[200px] h-9"
+          className="pl-8 pr-8 w-[200px] h-9"
         />
+        {filters.search && (
+          <button
+            type="button"
+            aria-label={t('tickets.clear_search')}
+            title={t('tickets.clear_search')}
+            onClick={() => onFiltersChange({ ...filters, search: '' })}
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        )}
       </div>
       <Select value={filters.type} onValueChange={v => onFiltersChange({ ...filters, type: v as TicketType | 'ALL' })}>
         <SelectTrigger className="w-[160px]">

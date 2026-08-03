@@ -117,6 +117,7 @@
         "comment": "Commentaire",
         "actions": "Actions",
         "no_data": "Aucune donnée disponible dans le tableau",
+        "clear_search": "Effacer la recherche",
         "all_types": "Tous les types",
         "all_gravities": "Toutes gravités",
         "filter_all": "Tous ({{label}})",

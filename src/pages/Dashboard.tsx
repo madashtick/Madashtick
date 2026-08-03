@@ -125,6 +125,8 @@ const Dashboard = () => {
   });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [ticketToEdit, setTicketToEdit] = useState<Ticket | null>(null);
+  // Dernier ticket ajouté ou modifié : épinglé en tête de liste
+  const [lastSavedTicketId, setLastSavedTicketId] = useState<string | null>(null);
 
   // Determine the year to display based on filters or the latest ticket
   const activeYear = useMemo(() => {
@@ -139,10 +141,12 @@ const Dashboard = () => {
   const availableMonths = useMemo(() => getAvailableMonths(tickets), [tickets]);
   const availableYears = useMemo(() => getAvailableYears(tickets), [tickets]);
   const filteredTickets = useMemo(() => {
-    return [...filterTickets(tickets, filters)].sort((a, b) =>
-      new Date(b.date_ouverture).getTime() - new Date(a.date_ouverture).getTime()
-    );
-  }, [tickets, filters]);
+    return [...filterTickets(tickets, filters)].sort((a, b) => {
+      if (a.id === lastSavedTicketId) return -1;
+      if (b.id === lastSavedTicketId) return 1;
+      return new Date(b.date_ouverture).getTime() - new Date(a.date_ouverture).getTime();
+    });
+  }, [tickets, filters, lastSavedTicketId]);
 
   const handleSaveTicket = async (ticket: Ticket) => {
     const isUpdate = tickets.some(t => t.id === ticket.id);
@@ -170,6 +174,8 @@ const Dashboard = () => {
         title: t('common.success'),
         description: t(isUpdate ? 'tickets.update_success' : 'tickets.add_success', { numero: ticket.numero_ticket })
       });
+      // Le ticket enregistré remonte en tête de liste
+      setLastSavedTicketId(ticket.id);
       // Rafraîchissement manuel immédiat pour l'utilisateur courant
       fetchTickets();
     }

@@ -94,7 +94,8 @@
             "kpi_prod": "Tickets en PROD",
             "kpi_test": "Tickets en TEST",
             "kpi_nouveau": "Nouveaux Tickets",
-            "kpi_encours": "Tickets en DEV"
+            "kpi_encours": "Tickets en DEV",
+            "charge_label": "Charge"
         },
         "monthly": {
             "month_column": "Mois (AAAA-MM)",

@@ -34,6 +34,12 @@ export interface KpiData {
     nouveau: number;
     enCours: number;
   };
+  chargeParStatut: {
+    prod: number;
+    test: number;
+    nouveau: number;
+    enCours: number;
+  };
 }
 
 export interface MonthlyData {

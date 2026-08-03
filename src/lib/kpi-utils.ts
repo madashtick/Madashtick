@@ -28,6 +28,10 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
   const nouveauTickets = periodTickets.filter(t => t.statut === 'NOUVEAU').length;
   const enCoursTickets = periodTickets.filter(t => t.statut === 'EN_COURS').length;
 
+  // Charge J/H cumulée par statut
+  const chargeByStatut = (statut: string) =>
+    Math.round(periodTickets.filter(t => t.statut === statut).reduce((s, t) => s + t.charge_jh, 0) * 100) / 100;
+
   return {
     budgetConsomme: totalJH,
     budgetObjectif,
@@ -44,6 +48,12 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
       test: testTickets,
       nouveau: nouveauTickets,
       enCours: enCoursTickets
+    },
+    chargeParStatut: {
+      prod: chargeByStatut('EN_PROD'),
+      test: chargeByStatut('EN_TEST'),
+      nouveau: chargeByStatut('NOUVEAU'),
+      enCours: chargeByStatut('EN_COURS')
     }
   };
 }

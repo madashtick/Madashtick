@@ -135,6 +135,9 @@ export function KpiCards({ kpi }: KpiCardsProps) {
               <span className="text-4xl font-bold text-green-700">{kpi.ticketsParStatut.prod}</span>
               <span className="text-lg font-bold text-green-700">{t('dashboard.kpi.tickets_unit')}</span>
             </div>
+            <p className="mt-1 text-sm font-semibold text-green-700/80">
+              {t('dashboard.kpi.charge_label')} : {kpi.chargeParStatut.prod} {t('common.jh')}
+            </p>
           </CardContent>
         </Card>
 
@@ -149,6 +152,9 @@ export function KpiCards({ kpi }: KpiCardsProps) {
               <span className="text-4xl font-bold text-blue-700">{kpi.ticketsParStatut.test}</span>
               <span className="text-lg font-bold text-blue-700">{t('dashboard.kpi.tickets_unit')}</span>
             </div>
+            <p className="mt-1 text-sm font-semibold text-blue-700/80">
+              {t('dashboard.kpi.charge_label')} : {kpi.chargeParStatut.test} {t('common.jh')}
+            </p>
           </CardContent>
         </Card>
 
@@ -163,6 +169,9 @@ export function KpiCards({ kpi }: KpiCardsProps) {
               <span className="text-4xl font-bold text-amber-700">{kpi.ticketsParStatut.enCours}</span>
               <span className="text-lg font-bold text-amber-700">{t('dashboard.kpi.tickets_unit')}</span>
             </div>
+            <p className="mt-1 text-sm font-semibold text-amber-700/80">
+              {t('dashboard.kpi.charge_label')} : {kpi.chargeParStatut.enCours} {t('common.jh')}
+            </p>
           </CardContent>
         </Card>
 
@@ -177,6 +186,9 @@ export function KpiCards({ kpi }: KpiCardsProps) {
               <span className="text-4xl font-bold text-indigo-700">{kpi.ticketsParStatut.nouveau}</span>
               <span className="text-lg font-bold text-indigo-700">{t('dashboard.kpi.tickets_unit')}</span>
             </div>
+            <p className="mt-1 text-sm font-semibold text-indigo-700/80">
+              {t('dashboard.kpi.charge_label')} : {kpi.chargeParStatut.nouveau} {t('common.jh')}
+            </p>
           </CardContent>
         </Card>
       </div>

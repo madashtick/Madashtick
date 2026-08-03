@@ -84,7 +84,7 @@
             "budget_title": "Annual Man-Day Charge Consumed",
             "target_budget": "Annual target: {{target}} M-D (To be adjusted)",
             "budget_pct": "{{pct}}% of budget consumed",
-            "tickets_title": "Number of Tickets Processed",
+            "tickets_title": "Total Number of Tickets",
             "tickets_unit": "Tickets",
             "target_tickets": "Annual target: {{target}} Tickets (To be adjusted)",
             "tickets_pct": "{{pct}}% of target reached",

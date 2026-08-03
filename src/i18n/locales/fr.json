@@ -84,7 +84,7 @@
             "budget_title": "Budget Annuel J/H Consommé",
             "target_budget": "Cible annuelle: {{target}} J/H ",
             "budget_pct": "{{pct}}% du budget consommé",
-            "tickets_title": "Nombre de Tickets Traités",
+            "tickets_title": "Nombre de Tickets Total",
             "tickets_unit": "Tickets",
             "target_tickets": "Cible annuelle: {{target}} Tickets ",
             "tickets_pct": "{{pct}}% de la cible atteinte",

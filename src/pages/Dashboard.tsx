@@ -182,16 +182,15 @@ const Dashboard = () => {
     }
   };
 
+  // La confirmation est déjà assurée par l'AlertDialog de TicketTable
   const handleDeleteTicket = async (ticketId: string) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce ticket ?')) {
-      const { error } = await supabase.from('tickets').delete().eq('id', ticketId);
-      if (error) {
-        toast({ title: t('common.error'), description: error.message, variant: 'destructive' });
-      } else {
-        toast({ title: t('common.success'), description: t('tickets.delete_success') || 'Ticket supprimé' });
-        // Rafraîchissement manuel immédiat
-        fetchTickets();
-      }
+    const { error } = await supabase.from('tickets').delete().eq('id', ticketId);
+    if (error) {
+      toast({ title: t('common.error'), description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: t('common.success'), description: t('tickets.delete_success') || 'Ticket supprimé' });
+      // Rafraîchissement manuel immédiat
+      fetchTickets();
     }
   };
 

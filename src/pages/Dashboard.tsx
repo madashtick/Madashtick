@@ -6,6 +6,7 @@ import { Project, initialProjects } from '@/types/project';
 import { computeKpi, computeMonthlyData, filterTickets, getAvailableMonths, getAvailableYears } from '@/lib/kpi-utils';
 import { KpiCards } from '@/components/dashboard/KpiCards';
 import { MonthlyTable } from '@/components/dashboard/MonthlyTable';
+import { StatsTable } from '@/components/dashboard/StatsTable';
 import { TicketTable } from '@/components/dashboard/TicketTable';
 import { TicketFiltersBar } from '@/components/dashboard/TicketFiltersBar';
 import { AddTicketDialog } from '@/components/dashboard/AddTicketDialog';
@@ -280,6 +281,16 @@ const Dashboard = () => {
             </h2>
           </div>
           <KpiCards kpi={kpi} />
+        </section>
+
+        {/* Statistiques et taux par statut */}
+        <section>
+          <div className="border-b-2 border-[#cfeadd] mb-6 pb-2">
+            <h2 className="text-[#004d40] text-xl font-bold italic">
+              {t('dashboard.stats_section')}
+            </h2>
+          </div>
+          <StatsTable kpi={kpi} />
         </section>
 
         {/* Monthly Table */}

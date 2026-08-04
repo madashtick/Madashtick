@@ -73,8 +73,8 @@
         "title": "Tableau de Bord de Suivi de la Maintenance",
         "subtitle": "Gérez et suivez les indicateurs de performance de votre projet en temps réel.",
         "kpi_section": "1. Indicateurs Clés de Performance (KPI) Annuels",
-        "monthly_section": "2. Cumul Mensuel des Charges J/H",
-        "tickets_section": "3. Détail et Cycle de Vie des Tickets",
+        "monthly_section": "3. Cumul Mensuel des Charges J/H",
+        "tickets_section": "4. Détail et Cycle de Vie des Tickets",
         "add_ticket": "Ajouter Ticket",
         "all_years": "Toutes années",
         "all_months": "Tous les mois",
@@ -103,6 +103,13 @@
             "tickets_count": "Tickets Traités",
             "target_column": "Cible Moyenne Tickets",
             "annual_total": "TOTAL ANNUEL"
+        },
+        "stats_section": "2. Statistique et Taux",
+        "stats": {
+            "status_column": "Statut",
+            "tickets_group": "Nombre de tickets",
+            "charge_group": "Charge",
+            "total": "Total"
         }
     },
     "tickets": {

@@ -73,8 +73,8 @@
         "title": "Maintenance Tracking Dashboard",
         "subtitle": "Manage and track your project's performance indicators in real time.",
         "kpi_section": "1. Annual Key Performance Indicators (KPI)",
-        "monthly_section": "2. Monthly Sum of Man-Day Charges",
-        "tickets_section": "3. Detail and Life Cycle of Tickets ",
+        "monthly_section": "3. Monthly Sum of Man-Day Charges",
+        "tickets_section": "4. Detail and Life Cycle of Tickets",
         "add_ticket": "Add Ticket",
         "all_years": "All years",
         "all_months": "All months",
@@ -103,6 +103,13 @@
             "tickets_count": "Tickets Processed",
             "target_column": "Mean Target Tickets",
             "annual_total": "ANNUAL TOTAL"
+        },
+        "stats_section": "2. Statistics and Rates",
+        "stats": {
+            "status_column": "Status",
+            "tickets_group": "Number of tickets",
+            "charge_group": "Workload",
+            "total": "Total"
         }
     },
     "tickets": {

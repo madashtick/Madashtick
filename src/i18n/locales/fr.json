@@ -109,7 +109,9 @@
             "status_column": "Statut",
             "tickets_group": "Nombre de tickets",
             "charge_group": "Charge",
-            "total": "Total"
+            "total": "Total",
+            "values_caption": "Valeurs",
+            "rates_caption": "Taux"
         }
     },
     "tickets": {

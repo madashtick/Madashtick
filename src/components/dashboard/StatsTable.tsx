@@ -7,7 +7,7 @@ interface StatsTableProps {
   kpi: KpiData;
 }
 
-// Taux d'une valeur au sein de sa ligne, en pourcentage à une décimale
+// Taux d'une valeur au sein de son ensemble, en pourcentage à une décimale
 function rate(value: number, total: number): string {
   if (total <= 0) return '0%';
   return `${Math.round((value / total) * 1000) / 10}%`;
@@ -19,6 +19,11 @@ const TYPE_COLORS = {
   preventif: 'text-[#e11d48]',
 } as const;
 
+const TYPES = ['evolutif', 'correctif', 'preventif'] as const;
+
+// tabular-nums fige la largeur des chiffres : les colonnes s'alignent au chiffre près
+const NUM_CELL = 'whitespace-nowrap text-right tabular-nums';
+
 export function StatsTable({ kpi }: StatsTableProps) {
   const { t } = useTranslation();
 
@@ -29,10 +34,8 @@ export function StatsTable({ kpi }: StatsTableProps) {
     { key: 'nouveau', label: t('dashboard.kpi.kpi_nouveau'), detail: kpi.detailParStatut.nouveau },
   ];
 
-  const types = ['evolutif', 'correctif', 'preventif'] as const;
-
   // Ligne de total : somme des 4 statuts, type par type
-  const totalRow = types.reduce(
+  const totalRow = TYPES.reduce(
     (acc, type) => {
       acc[type] = {
         count: rows.reduce((s, r) => s + r.detail[type].count, 0),
@@ -43,80 +46,87 @@ export function StatsTable({ kpi }: StatsTableProps) {
     {} as StatutDetail
   );
 
-  // Totaux généraux, servant de base au taux affiché dans les colonnes Total
-  const grandCount = types.reduce((s, type) => s + totalRow[type].count, 0);
-  const grandJh = Math.round(types.reduce((s, type) => s + totalRow[type].jh, 0) * 100) / 100;
+  // Totaux généraux, base des taux affichés dans les colonnes Total
+  const grandCount = TYPES.reduce((s, type) => s + totalRow[type].count, 0);
+  const grandJh = Math.round(TYPES.reduce((s, type) => s + totalRow[type].jh, 0) * 100) / 100;
 
-  const renderCells = (detail: StatutDetail, bold: boolean) => {
-    const totalCount = types.reduce((s, type) => s + detail[type].count, 0);
-    const totalJh = Math.round(types.reduce((s, type) => s + detail[type].jh, 0) * 100) / 100;
+  // `mode` choisit ce qu'on affiche : la valeur brute ou son taux
+  const renderCells = (detail: StatutDetail, mode: 'value' | 'rate', bold: boolean) => {
+    const totalCount = TYPES.reduce((s, type) => s + detail[type].count, 0);
+    const totalJh = Math.round(TYPES.reduce((s, type) => s + detail[type].jh, 0) * 100) / 100;
     const weight = bold ? 'font-bold' : 'font-medium';
 
     return (
       <>
-        {types.map(type => (
-          <TableCell key={`c-${type}`} className={`${TYPE_COLORS[type]} ${weight} whitespace-nowrap text-right`}>
-            {detail[type].count}
-            <span className="ml-1.5 text-xs opacity-70">({rate(detail[type].count, totalCount)})</span>
+        {TYPES.map(type => (
+          <TableCell key={`c-${type}`} className={`${TYPE_COLORS[type]} ${weight} ${NUM_CELL}`}>
+            {mode === 'value' ? detail[type].count : rate(detail[type].count, totalCount)}
           </TableCell>
         ))}
-        <TableCell className="text-[#004d40] font-bold whitespace-nowrap text-right">
-          {totalCount}
-          <span className="ml-1.5 text-xs opacity-70">({rate(totalCount, grandCount)})</span>
+        <TableCell className={`text-[#004d40] font-bold ${NUM_CELL}`}>
+          {mode === 'value' ? totalCount : rate(totalCount, grandCount)}
         </TableCell>
-        {types.map(type => (
-          <TableCell key={`j-${type}`} className={`${TYPE_COLORS[type]} ${weight} whitespace-nowrap text-right`}>
-            {formatJH(detail[type].jh)}
-            <span className="ml-1.5 text-xs opacity-70">({rate(detail[type].jh, totalJh)})</span>
+        {TYPES.map(type => (
+          <TableCell key={`j-${type}`} className={`${TYPE_COLORS[type]} ${weight} ${NUM_CELL}`}>
+            {mode === 'value' ? formatJH(detail[type].jh) : rate(detail[type].jh, totalJh)}
           </TableCell>
         ))}
-        <TableCell className="text-[#004d40] font-bold whitespace-nowrap text-right">
-          {formatJH(totalJh)}
-          <span className="ml-1.5 text-xs opacity-70">({rate(totalJh, grandJh)})</span>
+        <TableCell className={`text-[#004d40] font-bold ${NUM_CELL}`}>
+          {mode === 'value' ? formatJH(totalJh) : rate(totalJh, grandJh)}
         </TableCell>
       </>
     );
   };
 
-  return (
-    <div className="border-[1.5px] border-[#e2e8f0] bg-white overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-[#f0f9f6] hover:bg-[#f0f9f6] border-b border-[#cfeadd]">
-            <TableHead rowSpan={2} className="text-[#004d40] font-bold align-bottom">
-              {t('dashboard.stats.status_column')}
-            </TableHead>
-            <TableHead colSpan={4} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
-              {t('dashboard.stats.tickets_group')}
-            </TableHead>
-            <TableHead colSpan={4} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
-              {t('dashboard.stats.charge_group')} ({t('common.jh')})
-            </TableHead>
-          </TableRow>
-          <TableRow className="bg-[#f0f9f6] hover:bg-[#f0f9f6] border-b border-[#cfeadd]">
-            <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
-            <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
-            <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
-            <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
-            <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
-            <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
-            <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
-            <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.key} className="border-b border-[#f1f5f9]">
-              <TableCell className="font-medium text-slate-600 whitespace-nowrap">{row.label}</TableCell>
-              {renderCells(row.detail, false)}
+  const renderTable = (mode: 'value' | 'rate', caption: string) => (
+    <div>
+      <h3 className="text-[#004d40] text-sm font-bold uppercase tracking-wider mb-2">{caption}</h3>
+      <div className="border-[1.5px] border-[#e2e8f0] bg-white overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-[#f0f9f6] hover:bg-[#f0f9f6] border-b border-[#cfeadd]">
+              <TableHead rowSpan={2} className="text-[#004d40] font-bold align-bottom">
+                {t('dashboard.stats.status_column')}
+              </TableHead>
+              <TableHead colSpan={4} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
+                {t('dashboard.stats.tickets_group')}
+              </TableHead>
+              <TableHead colSpan={4} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
+                {t('dashboard.stats.charge_group')}{mode === 'value' ? ` (${t('common.jh')})` : ''}
+              </TableHead>
             </TableRow>
-          ))}
-          <TableRow className="bg-[#f8fafc] border-t-2 border-[#cfeadd]">
-            <TableCell className="text-[#004d40] font-bold">{t('dashboard.stats.total')}</TableCell>
-            {renderCells(totalRow, true)}
-          </TableRow>
-        </TableBody>
-      </Table>
+            <TableRow className="bg-[#f0f9f6] hover:bg-[#f0f9f6] border-b border-[#cfeadd]">
+              <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
+              <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
+              <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
+              <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
+              <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
+              <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
+              <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
+              <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rows.map(row => (
+              <TableRow key={row.key} className="border-b border-[#f1f5f9]">
+                <TableCell className="font-medium text-slate-600 whitespace-nowrap">{row.label}</TableCell>
+                {renderCells(row.detail, mode, false)}
+              </TableRow>
+            ))}
+            <TableRow className="bg-[#f8fafc] border-t-2 border-[#cfeadd]">
+              <TableCell className="text-[#004d40] font-bold">{t('dashboard.stats.total')}</TableCell>
+              {renderCells(totalRow, mode, true)}
+            </TableRow>
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      {renderTable('value', t('dashboard.stats.values_caption'))}
+      {renderTable('rate', t('dashboard.stats.rates_caption'))}
     </div>
   );
 }

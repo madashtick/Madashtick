@@ -1,4 +1,4 @@
-import { KpiData, StatutDetail } from '@/types/ticket';
+import { KpiData } from '@/types/ticket';
 import { formatJH } from '@/lib/kpi-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -7,29 +7,6 @@ import { useTranslation } from 'react-i18next';
 
 interface KpiCardsProps {
   kpi: KpiData;
-}
-
-// Ventilation Évolutif / Correctif / Préventif affichée au pied des cartes de statut
-function TypeBreakdown({ detail, className }: { detail: StatutDetail; className: string }) {
-  const { t } = useTranslation();
-  const rows = [
-    { label: t('tickets.type_values.evolutif'), value: detail.evolutif },
-    { label: t('tickets.type_values.correctif'), value: detail.correctif },
-    { label: t('tickets.type_values.preventif'), value: detail.preventif },
-  ];
-
-  return (
-    <div className={`mt-2 space-y-0.5 text-[11px] ${className}`}>
-      {rows.map(row => (
-        <div key={row.label} className="flex items-baseline justify-between gap-2">
-          <span className="font-medium uppercase tracking-wide">{row.label}</span>
-          <span className="font-bold whitespace-nowrap">
-            {row.value.count} · {formatJH(row.value.jh)} {t('common.jh')}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
 }
 
 export function KpiCards({ kpi }: KpiCardsProps) {
@@ -162,7 +139,6 @@ export function KpiCards({ kpi }: KpiCardsProps) {
             <p className="mt-1 text-sm font-semibold text-green-700/80">
               {t('dashboard.kpi.charge_label')} : {formatJH(kpi.chargeParStatut.prod)} {t('common.jh')}
             </p>
-            <TypeBreakdown detail={kpi.detailParStatut.prod} className="text-green-700/80" />
           </CardContent>
         </Card>
 
@@ -180,7 +156,6 @@ export function KpiCards({ kpi }: KpiCardsProps) {
             <p className="mt-1 text-sm font-semibold text-blue-700/80">
               {t('dashboard.kpi.charge_label')} : {formatJH(kpi.chargeParStatut.test)} {t('common.jh')}
             </p>
-            <TypeBreakdown detail={kpi.detailParStatut.test} className="text-blue-700/80" />
           </CardContent>
         </Card>
 
@@ -198,7 +173,6 @@ export function KpiCards({ kpi }: KpiCardsProps) {
             <p className="mt-1 text-sm font-semibold text-amber-700/80">
               {t('dashboard.kpi.charge_label')} : {formatJH(kpi.chargeParStatut.enCours)} {t('common.jh')}
             </p>
-            <TypeBreakdown detail={kpi.detailParStatut.enCours} className="text-amber-700/80" />
           </CardContent>
         </Card>
 
@@ -216,7 +190,6 @@ export function KpiCards({ kpi }: KpiCardsProps) {
             <p className="mt-1 text-sm font-semibold text-indigo-700/80">
               {t('dashboard.kpi.charge_label')} : {formatJH(kpi.chargeParStatut.nouveau)} {t('common.jh')}
             </p>
-            <TypeBreakdown detail={kpi.detailParStatut.nouveau} className="text-indigo-700/80" />
           </CardContent>
         </Card>
       </div>

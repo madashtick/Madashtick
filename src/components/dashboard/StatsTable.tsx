@@ -55,22 +55,22 @@ export function StatsTable({ kpi }: StatsTableProps) {
     return (
       <>
         {types.map(type => (
-          <TableCell key={`c-${type}`} className={`${TYPE_COLORS[type]} ${weight} whitespace-nowrap`}>
+          <TableCell key={`c-${type}`} className={`${TYPE_COLORS[type]} ${weight} whitespace-nowrap text-right`}>
             {detail[type].count}
             <span className="ml-1.5 text-xs opacity-70">({rate(detail[type].count, totalCount)})</span>
           </TableCell>
         ))}
-        <TableCell className="text-[#004d40] font-bold whitespace-nowrap">
+        <TableCell className="text-[#004d40] font-bold whitespace-nowrap text-right">
           {totalCount}
           <span className="ml-1.5 text-xs opacity-70">({rate(totalCount, grandCount)})</span>
         </TableCell>
         {types.map(type => (
-          <TableCell key={`j-${type}`} className={`${TYPE_COLORS[type]} ${weight} whitespace-nowrap`}>
+          <TableCell key={`j-${type}`} className={`${TYPE_COLORS[type]} ${weight} whitespace-nowrap text-right`}>
             {formatJH(detail[type].jh)}
             <span className="ml-1.5 text-xs opacity-70">({rate(detail[type].jh, totalJh)})</span>
           </TableCell>
         ))}
-        <TableCell className="text-[#004d40] font-bold whitespace-nowrap">
+        <TableCell className="text-[#004d40] font-bold whitespace-nowrap text-right">
           {formatJH(totalJh)}
           <span className="ml-1.5 text-xs opacity-70">({rate(totalJh, grandJh)})</span>
         </TableCell>
@@ -94,14 +94,14 @@ export function StatsTable({ kpi }: StatsTableProps) {
             </TableHead>
           </TableRow>
           <TableRow className="bg-[#f0f9f6] hover:bg-[#f0f9f6] border-b border-[#cfeadd]">
-            <TableHead className="text-[#5fa8d3] font-bold border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
-            <TableHead className="text-[#f59e0b] font-bold">{t('tickets.type_values.correctif')}</TableHead>
-            <TableHead className="text-[#e11d48] font-bold">{t('tickets.type_values.preventif')}</TableHead>
-            <TableHead className="text-[#004d40] font-bold">{t('dashboard.stats.total')}</TableHead>
-            <TableHead className="text-[#5fa8d3] font-bold border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
-            <TableHead className="text-[#f59e0b] font-bold">{t('tickets.type_values.correctif')}</TableHead>
-            <TableHead className="text-[#e11d48] font-bold">{t('tickets.type_values.preventif')}</TableHead>
-            <TableHead className="text-[#004d40] font-bold">{t('dashboard.stats.total')}</TableHead>
+            <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
+            <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
+            <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
+            <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
+            <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
+            <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
+            <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
+            <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

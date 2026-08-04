@@ -22,7 +22,7 @@ const TYPE_COLORS = {
 const TYPES = ['evolutif', 'correctif', 'preventif'] as const;
 
 // tabular-nums fige la largeur des chiffres : les colonnes s'alignent au chiffre près
-const NUM_CELL = 'whitespace-nowrap text-right tabular-nums';
+const NUM_CELL = 'whitespace-nowrap text-right tabular-nums font-bold';
 
 export function StatsTable({ kpi }: StatsTableProps) {
   const { t } = useTranslation();
@@ -54,24 +54,25 @@ export function StatsTable({ kpi }: StatsTableProps) {
   const renderCells = (detail: StatutDetail, mode: 'value' | 'rate', bold: boolean) => {
     const totalCount = TYPES.reduce((s, type) => s + detail[type].count, 0);
     const totalJh = Math.round(TYPES.reduce((s, type) => s + detail[type].jh, 0) * 100) / 100;
-    const weight = bold ? 'font-bold' : 'font-medium';
+    // La ligne de total ressort d'un cran au-dessus des lignes de statut
+    const size = bold ? 'text-lg' : 'text-base';
 
     return (
       <>
         {TYPES.map(type => (
-          <TableCell key={`c-${type}`} className={`${TYPE_COLORS[type]} ${weight} ${NUM_CELL}`}>
+          <TableCell key={`c-${type}`} className={`${TYPE_COLORS[type]} ${size} ${NUM_CELL}`}>
             {mode === 'value' ? detail[type].count : rate(detail[type].count, totalCount)}
           </TableCell>
         ))}
-        <TableCell className={`text-[#004d40] font-bold ${NUM_CELL}`}>
+        <TableCell className={`text-[#004d40] ${size} ${NUM_CELL}`}>
           {mode === 'value' ? totalCount : rate(totalCount, grandCount)}
         </TableCell>
         {TYPES.map(type => (
-          <TableCell key={`j-${type}`} className={`${TYPE_COLORS[type]} ${weight} ${NUM_CELL}`}>
+          <TableCell key={`j-${type}`} className={`${TYPE_COLORS[type]} ${size} ${NUM_CELL}`}>
             {mode === 'value' ? formatJH(detail[type].jh) : rate(detail[type].jh, totalJh)}
           </TableCell>
         ))}
-        <TableCell className={`text-[#004d40] font-bold ${NUM_CELL}`}>
+        <TableCell className={`text-[#004d40] ${size} ${NUM_CELL}`}>
           {mode === 'value' ? formatJH(totalJh) : rate(totalJh, grandJh)}
         </TableCell>
       </>

@@ -40,6 +40,25 @@ export interface KpiData {
     nouveau: number;
     enCours: number;
   };
+  detailParStatut: {
+    prod: StatutDetail;
+    test: StatutDetail;
+    nouveau: StatutDetail;
+    enCours: StatutDetail;
+  };
+}
+
+// Nombre de tickets et charge cumulée, pour un type donné
+export interface TypeDetail {
+  count: number;
+  jh: number;
+}
+
+// Ventilation par type au sein d'un statut
+export interface StatutDetail {
+  evolutif: TypeDetail;
+  correctif: TypeDetail;
+  preventif: TypeDetail;
 }
 
 export interface MonthlyData {

@@ -25,11 +25,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { Edit, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-
-// Affiche 1 décimale par défaut, jusqu'à 2 pour les charges fines (0.25, 0.1...)
-function formatCharge(jh: number): string {
-  return jh.toFixed(2).replace(/0$/, '');
-}
+import { formatJH } from '@/lib/kpi-utils';
 
 interface TicketTableProps {
   tickets: Ticket[];
@@ -154,7 +150,7 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
                 <TableCell className="text-slate-600 font-medium py-1 px-1">
                   {getGravityLabel(t.gravite)}
                 </TableCell>
-                <TableCell className="text-center font-bold text-slate-700 py-1 px-1">{formatCharge(t.charge_jh)}</TableCell>
+                <TableCell className="text-center font-bold text-slate-700 py-1 px-1">{formatJH(t.charge_jh)}</TableCell>
                 <TableCell className="text-slate-500 py-1 px-1 whitespace-nowrap">{t.date_ouverture}</TableCell>
                 <TableCell className="text-slate-500 py-1 px-1 whitespace-nowrap">{t.date_livraison || 'N/A'}</TableCell>
                 <TableCell className="text-slate-500 py-1 px-1 whitespace-nowrap">{t.date_mep || 'N/A'}</TableCell>

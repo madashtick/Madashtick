@@ -1,4 +1,9 @@
-import { Ticket, KpiData, MonthlyData, TicketFilters } from '@/types/ticket';
+import { Ticket, KpiData, MonthlyData, StatutDetail, TicketFilters } from '@/types/ticket';
+
+// Affiche 1 décimale par défaut, jusqu'à 2 pour les charges fines (0.25, 0.1...)
+export function formatJH(jh: number): string {
+  return jh.toFixed(2).replace(/0$/, '');
+}
 
 export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObjectif = 300, month?: string): KpiData {
   let periodTickets = year === 'ALL' ? tickets : tickets.filter(t => t.date_ouverture.startsWith(String(year)));
@@ -32,6 +37,23 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
   const chargeByStatut = (statut: string) =>
     Math.round(periodTickets.filter(t => t.statut === statut).reduce((s, t) => s + t.charge_jh, 0) * 100) / 100;
 
+  // Ventilation par type (nombre + charge) au sein d'un statut
+  const detailByStatut = (statut: string): StatutDetail => {
+    const ofStatut = periodTickets.filter(t => t.statut === statut);
+    const forType = (type: string) => {
+      const rows = ofStatut.filter(t => t.type === type);
+      return {
+        count: rows.length,
+        jh: Math.round(rows.reduce((s, t) => s + t.charge_jh, 0) * 100) / 100
+      };
+    };
+    return {
+      evolutif: forType('EVOLUTIF'),
+      correctif: forType('CORRECTIF'),
+      preventif: forType('PREVENTIF')
+    };
+  };
+
   return {
     budgetConsomme: totalJH,
     budgetObjectif,
@@ -54,6 +76,12 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
       test: chargeByStatut('EN_TEST'),
       nouveau: chargeByStatut('NOUVEAU'),
       enCours: chargeByStatut('EN_COURS')
+    },
+    detailParStatut: {
+      prod: detailByStatut('EN_PROD'),
+      test: detailByStatut('EN_TEST'),
+      nouveau: detailByStatut('NOUVEAU'),
+      enCours: detailByStatut('EN_COURS')
     }
   };
 }

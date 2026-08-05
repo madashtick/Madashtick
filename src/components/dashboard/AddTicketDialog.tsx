@@ -20,6 +20,7 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
   const { t } = useTranslation();
   const [form, setForm] = useState({
     numero_ticket: '',
+    ligne_contrat: '',
     libelle: '',
     type: 'CORRECTIF' as TicketType,
     gravite: 'MINEUR' as TicketGravite,
@@ -35,6 +36,7 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
     if (ticketToEdit) {
       setForm({
         numero_ticket: ticketToEdit.numero_ticket,
+        ligne_contrat: ticketToEdit.ligne_contrat || '',
         libelle: ticketToEdit.libelle,
         type: ticketToEdit.type,
         gravite: ticketToEdit.gravite,
@@ -48,6 +50,7 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
     } else {
       setForm({
         numero_ticket: '',
+        ligne_contrat: '',
         libelle: '',
         type: 'CORRECTIF',
         gravite: 'MINEUR',
@@ -84,6 +87,7 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
     const ticket: Ticket = {
       id: ticketToEdit ? ticketToEdit.id : crypto.randomUUID(),
       numero_ticket: form.numero_ticket,
+      ligne_contrat: form.ligne_contrat || null,
       libelle: form.libelle,
       type: form.type,
       gravite: form.gravite,
@@ -121,6 +125,17 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
             </div>
           </div>
           <div className="space-y-2">
+            <Label htmlFor="ligne_contrat">{t('tickets.contract_line')}</Label>
+            <Input
+              id="ligne_contrat"
+              inputMode="numeric"
+              value={form.ligne_contrat}
+              // Saisie restreinte aux chiffres : tout autre caractère est ignoré à la frappe
+              onChange={e => setForm({ ...form, ligne_contrat: e.target.value.replace(/\D/g, '') })}
+              placeholder={t('tickets.contract_line_placeholder')}
+            />
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="libelle">{t('tickets.label')} *</Label>
             <Input id="libelle" value={form.libelle} onChange={e => setForm({ ...form, libelle: e.target.value })} placeholder={t('tickets.label_placeholder')} />
           </div>
@@ -153,6 +168,7 @@ export function AddTicketDialog({ open, onOpenChange, onSave, ticketToEdit }: Ad
                   <SelectItem value="EVOLUTIF">{t('tickets.type_values.evolutif')}</SelectItem>
                   <SelectItem value="CORRECTIF">{t('tickets.type_values.correctif')}</SelectItem>
                   <SelectItem value="PREVENTIF">{t('tickets.type_values.preventif')}</SelectItem>
+                  <SelectItem value="HORS_CONTRAT">{t('tickets.type_values.hors_contrat')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

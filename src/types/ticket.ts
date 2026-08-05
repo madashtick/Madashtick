@@ -1,10 +1,11 @@
 export type TicketStatut = 'NOUVEAU' | 'EN_COURS' | 'EN_TEST' | 'EN_PROD' | 'ABANDONNE';
-export type TicketType = 'EVOLUTIF' | 'CORRECTIF' | 'PREVENTIF';
+export type TicketType = 'EVOLUTIF' | 'CORRECTIF' | 'PREVENTIF' | 'HORS_CONTRAT';
 export type TicketGravite = 'MINEUR' | 'MAJEUR' | 'BLOQUANT';
 
 export interface Ticket {
   id: string;
   numero_ticket: string;
+  ligne_contrat: string | null;
   libelle: string;
   type: TicketType;
   gravite: TicketGravite;
@@ -27,6 +28,7 @@ export interface KpiData {
     evolutif: { total: number; pct: number };
     correctif: { total: number; pct: number };
     preventif: { total: number; pct: number };
+    horsContrat: { total: number; pct: number };
   };
   ticketsParStatut: {
     prod: number;
@@ -59,6 +61,7 @@ export interface StatutDetail {
   evolutif: TypeDetail;
   correctif: TypeDetail;
   preventif: TypeDetail;
+  horsContrat: TypeDetail;
 }
 
 export interface MonthlyData {
@@ -67,6 +70,7 @@ export interface MonthlyData {
   evolutifJH: number;
   correctifJH: number;
   preventifJH: number;
+  horsContratJH: number;
   ticketsTraites: number;
 }
 

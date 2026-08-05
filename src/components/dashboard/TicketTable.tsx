@@ -108,6 +108,7 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
           <TableHeader className="sticky top-[138px] z-20 bg-[#f0f9f6] shadow-md ring-1 ring-[#cfeadd]">
             <TableRow className="border-b-0 hover:bg-[#f0f9f6]">
               <TableHead className="text-[#004d40] font-bold py-3 whitespace-nowrap px-2">{t('tickets.number')}</TableHead>
+              <TableHead className="text-[#004d40] font-bold py-2 whitespace-nowrap px-1">{t('tickets.contract_line')}</TableHead>
               <TableHead className="text-[#004d40] font-bold py-2 px-1">{t('tickets.label')}</TableHead>
               <TableHead className="text-[#004d40] font-bold py-2 whitespace-nowrap px-1">{t('tickets.status')}</TableHead>
               <TableHead className="text-[#004d40] font-bold py-2 whitespace-nowrap px-1">{t('tickets.type')}</TableHead>
@@ -127,6 +128,7 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
                 idx % 2 === 0 ? "bg-white" : "bg-[#f8fafc]"
               )}>
                 <TableCell className="font-medium text-[#007b8b] whitespace-nowrap py-1 px-1">{t.numero_ticket}</TableCell>
+                <TableCell className="text-slate-600 font-medium whitespace-nowrap py-1 px-1">{t.ligne_contrat || '-'}</TableCell>
                 <TableCell className="text-slate-700 font-medium py-1 px-1 min-w-[120px] max-w-[200px] leading-tight">
                   {t.libelle}
                 </TableCell>
@@ -142,7 +144,8 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
                   <span className={cn(
                     "font-bold",
                     t.type === 'CORRECTIF' ? "text-[#f59e0b]" :
-                      t.type === 'EVOLUTIF' ? "text-[#5fa8d3]" : "text-[#e11d48]"
+                      t.type === 'EVOLUTIF' ? "text-[#5fa8d3]" :
+                        t.type === 'HORS_CONTRAT' ? "text-[#7c3aed]" : "text-[#e11d48]"
                   )}>
                     {getTypeLabel(t.type)}
                   </span>
@@ -179,7 +182,7 @@ export function TicketTable({ tickets, onEdit, onDelete }: TicketTableProps) {
             ))}
             {tickets.length === 0 && (
               <TableRow>
-                <TableCell colSpan={11} className="text-center text-muted-foreground py-12 italic">
+                <TableCell colSpan={12} className="text-center text-muted-foreground py-12 italic">
                   {t('tickets.no_data')}
                 </TableCell>
               </TableRow>

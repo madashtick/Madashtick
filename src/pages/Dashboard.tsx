@@ -100,6 +100,7 @@ const Dashboard = () => {
       setTickets(data.map(t => ({
         id: t.id,
         numero_ticket: t.numero_ticket,
+        ligne_contrat: t.ligne_contrat,
         libelle: t.libelle,
         type: t.type,
         gravite: t.gravite,
@@ -155,6 +156,7 @@ const Dashboard = () => {
       id: ticket.id,
       project_id: projectId,
       numero_ticket: ticket.numero_ticket,
+      ligne_contrat: ticket.ligne_contrat || null,
       libelle: ticket.libelle,
       type: ticket.type,
       gravite: ticket.gravite,

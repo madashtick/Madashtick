@@ -119,6 +119,14 @@ export function KpiCards({ kpi }: KpiCardsProps) {
                 <span className="text-sm font-semibold text-[#e11d48] ml-auto">({kpi.repartition.preventif.pct}%)</span>
               </div>
             </div>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#7c3aed]">{t('tickets.type_values.hors_contrat')}</span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-[#7c3aed]">{kpi.repartition.horsContrat.total.toFixed(1)}</span>
+                <span className="text-sm font-bold text-[#7c3aed]">{t('common.jh')}</span>
+                <span className="text-sm font-semibold text-[#7c3aed] ml-auto">({kpi.repartition.horsContrat.pct}%)</span>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

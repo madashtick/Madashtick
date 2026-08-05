@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { KpiData, StatutDetail } from '@/types/ticket';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatJH } from '@/lib/kpi-utils';
@@ -17,9 +18,18 @@ const TYPE_COLORS = {
   evolutif: 'text-[#5fa8d3]',
   correctif: 'text-[#f59e0b]',
   preventif: 'text-[#e11d48]',
+  horsContrat: 'text-[#7c3aed]',
 } as const;
 
-const TYPES = ['evolutif', 'correctif', 'preventif'] as const;
+const TYPES = ['evolutif', 'correctif', 'preventif', 'horsContrat'] as const;
+
+// Clés i18n des types, indexées par la clé camelCase utilisée dans StatutDetail
+const TYPE_LABEL_KEYS = {
+  evolutif: 'tickets.type_values.evolutif',
+  correctif: 'tickets.type_values.correctif',
+  preventif: 'tickets.type_values.preventif',
+  horsContrat: 'tickets.type_values.hors_contrat',
+} as const;
 
 // tabular-nums fige la largeur des chiffres : les colonnes s'alignent au chiffre près
 const NUM_CELL = 'whitespace-nowrap text-right tabular-nums font-bold';
@@ -89,22 +99,29 @@ export function StatsTable({ kpi }: StatsTableProps) {
               <TableHead rowSpan={2} className="text-[#004d40] font-bold align-bottom">
                 {t('dashboard.stats.status_column')}
               </TableHead>
-              <TableHead colSpan={4} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
+              <TableHead colSpan={5} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
                 {t('dashboard.stats.tickets_group')}
               </TableHead>
-              <TableHead colSpan={4} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
+              <TableHead colSpan={5} className="text-[#004d40] font-bold text-center border-l border-[#cfeadd]">
                 {t('dashboard.stats.charge_group')}{mode === 'value' ? ` (${t('common.jh')})` : ''}
               </TableHead>
             </TableRow>
             <TableRow className="bg-[#f0f9f6] hover:bg-[#f0f9f6] border-b border-[#cfeadd]">
-              <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
-              <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
-              <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
-              <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
-              <TableHead className="text-[#5fa8d3] font-bold text-right border-l border-[#cfeadd]">{t('tickets.type_values.evolutif')}</TableHead>
-              <TableHead className="text-[#f59e0b] font-bold text-right">{t('tickets.type_values.correctif')}</TableHead>
-              <TableHead className="text-[#e11d48] font-bold text-right">{t('tickets.type_values.preventif')}</TableHead>
-              <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
+              {/* Deux groupes identiques (tickets puis charges), générés depuis TYPES
+                  pour rester alignés sur les colonnes rendues par renderCells */}
+              {(['count', 'jh'] as const).map(group => (
+                <Fragment key={group}>
+                  {TYPES.map((type, i) => (
+                    <TableHead
+                      key={`${group}-${type}`}
+                      className={`${TYPE_COLORS[type]} font-bold text-right ${i === 0 ? 'border-l border-[#cfeadd]' : ''}`}
+                    >
+                      {t(TYPE_LABEL_KEYS[type])}
+                    </TableHead>
+                  ))}
+                  <TableHead className="text-[#004d40] font-bold text-right">{t('dashboard.stats.total')}</TableHead>
+                </Fragment>
+              ))}
             </TableRow>
           </TableHeader>
           <TableBody>

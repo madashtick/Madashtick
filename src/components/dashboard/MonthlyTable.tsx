@@ -21,6 +21,7 @@ export function MonthlyTable({ data, cibleMoyenne = 5 }: MonthlyTableProps) {
             <TableHead className="text-[#5fa8d3] font-bold">{t('tickets.type_values.evolutif')} ({t('common.jh')})</TableHead>
             <TableHead className="text-[#f59e0b] font-bold">{t('tickets.type_values.correctif')} ({t('common.jh')})</TableHead>
             <TableHead className="text-[#e11d48] font-bold">{t('tickets.type_values.preventif')} ({t('common.jh')})</TableHead>
+            <TableHead className="text-[#7c3aed] font-bold">{t('tickets.type_values.hors_contrat')} ({t('common.jh')})</TableHead>
             <TableHead className="text-black font-bold">{t('dashboard.monthly.tickets_count')}</TableHead>
             <TableHead className="text-black font-bold">{t('dashboard.monthly.target_column')}</TableHead>
           </TableRow>
@@ -40,6 +41,7 @@ export function MonthlyTable({ data, cibleMoyenne = 5 }: MonthlyTableProps) {
                 <TableCell className="text-[#5fa8d3] font-medium">{row.evolutifJH.toFixed(1)}</TableCell>
                 <TableCell className="text-[#f59e0b] font-medium">{row.correctifJH.toFixed(1)}</TableCell>
                 <TableCell className="text-[#e11d48] font-medium">{row.preventifJH.toFixed(1)}</TableCell>
+                <TableCell className="text-[#7c3aed] font-medium">{row.horsContratJH.toFixed(1)}</TableCell>
                 <TableCell className="font-medium">{row.ticketsTraites}</TableCell>
                 <TableCell className={cn(
                   "font-medium",
@@ -57,6 +59,7 @@ export function MonthlyTable({ data, cibleMoyenne = 5 }: MonthlyTableProps) {
             <TableCell className="text-[#5fa8d3]">{data.reduce((s, r) => s + r.evolutifJH, 0).toFixed(1)}</TableCell>
             <TableCell className="text-[#f59e0b]">{data.reduce((s, r) => s + r.correctifJH, 0).toFixed(1)}</TableCell>
             <TableCell className="text-[#e11d48]">{data.reduce((s, r) => s + r.preventifJH, 0).toFixed(1)}</TableCell>
+            <TableCell className="text-[#7c3aed]">{data.reduce((s, r) => s + r.horsContratJH, 0).toFixed(1)}</TableCell>
             <TableCell>{data.reduce((s, r) => s + r.ticketsTraites, 0)}</TableCell>
             <TableCell className="text-slate-400">-</TableCell>
           </TableRow>

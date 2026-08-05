@@ -44,6 +44,7 @@ export function TicketFiltersBar({ filters, onFiltersChange }: TicketFiltersBarP
           <SelectItem value="EVOLUTIF">{t('tickets.type_values.evolutif')}</SelectItem>
           <SelectItem value="CORRECTIF">{t('tickets.type_values.correctif')}</SelectItem>
           <SelectItem value="PREVENTIF">{t('tickets.type_values.preventif')}</SelectItem>
+          <SelectItem value="HORS_CONTRAT">{t('tickets.type_values.hors_contrat')}</SelectItem>
         </SelectContent>
       </Select>
 

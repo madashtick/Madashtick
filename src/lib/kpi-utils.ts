@@ -26,6 +26,7 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
   const evolutif = byType('EVOLUTIF');
   const correctif = byType('CORRECTIF');
   const preventif = byType('PREVENTIF');
+  const horsContrat = byType('HORS_CONTRAT');
 
   // Calcul des tickets par statut
   const prodTickets = periodTickets.filter(t => t.statut === 'EN_PROD').length;
@@ -50,7 +51,8 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
     return {
       evolutif: forType('EVOLUTIF'),
       correctif: forType('CORRECTIF'),
-      preventif: forType('PREVENTIF')
+      preventif: forType('PREVENTIF'),
+      horsContrat: forType('HORS_CONTRAT')
     };
   };
 
@@ -64,6 +66,7 @@ export function computeKpi(tickets: Ticket[], year: number | 'ALL', budgetObject
       evolutif: { total: evolutif, pct: totalJH > 0 ? Math.round((evolutif / totalJH) * 1000) / 10 : 0 },
       correctif: { total: correctif, pct: totalJH > 0 ? Math.round((correctif / totalJH) * 1000) / 10 : 0 },
       preventif: { total: preventif, pct: totalJH > 0 ? Math.round((preventif / totalJH) * 1000) / 10 : 0 },
+      horsContrat: { total: horsContrat, pct: totalJH > 0 ? Math.round((horsContrat / totalJH) * 1000) / 10 : 0 },
     },
     ticketsParStatut: {
       prod: prodTickets,
@@ -113,6 +116,7 @@ export function computeMonthlyData(tickets: Ticket[], year: number | 'ALL', mont
           evolutifJH: monthTickets.filter(t => t.type === 'EVOLUTIF').reduce((s, t) => s + t.charge_jh, 0),
           correctifJH: monthTickets.filter(t => t.type === 'CORRECTIF').reduce((s, t) => s + t.charge_jh, 0),
           preventifJH: monthTickets.filter(t => t.type === 'PREVENTIF').reduce((s, t) => s + t.charge_jh, 0),
+          horsContratJH: monthTickets.filter(t => t.type === 'HORS_CONTRAT').reduce((s, t) => s + t.charge_jh, 0),
           ticketsTraites: monthTickets.length,
         });
       }

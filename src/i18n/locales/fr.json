@@ -160,12 +160,15 @@
         "type_values": {
             "correctif": "Correctif",
             "evolutif": "Evolutif",
-            "preventif": "Préventif"
+            "preventif": "Préventif",
+            "hors_contrat": "Hors contrat"
         },
         "gravity_values": {
             "mineur": "Mineur",
             "majeur": "Majeur",
             "bloquant": "Bloquant"
-        }
+        },
+        "contract_line": "Ligne du contrat",
+        "contract_line_placeholder": "Ex: 12"
     }
 }
